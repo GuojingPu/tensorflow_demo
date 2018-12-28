@@ -131,7 +131,7 @@ print('y_conv:',y_conv)
 cross_entropy = -tf.reduce_sum(y_ * tf.log(y_conv))
 
 #使用梯度下降算法对模型进行训练
-train_step = tf.train.GradientDescentOptimizer(0.001).minimize(cross_entropy)
+train_step = tf.train.GradientDescentOptimizer(0.0001).minimize(cross_entropy)
 
 
 sess = tf.InteractiveSession()
