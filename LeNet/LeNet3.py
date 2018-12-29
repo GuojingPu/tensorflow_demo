@@ -85,6 +85,7 @@ def model_LeNet(x_image,y_):
     y_conv = tf.nn.softmax(tf.matmul(h_fc2,W_fc3) + b_fc3); print('y_conv:',y_conv) #使用sofrmax进行多分类
 
     """损失函数"""
+
     cross_entropy = -tf.reduce_sum(y_ * tf.log(y_conv))  #损失函数/熵
 
     """训练模型"""
