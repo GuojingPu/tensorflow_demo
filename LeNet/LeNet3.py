@@ -117,7 +117,7 @@ def main():
 
     c = []
     start_time = time.time();print('start_time:',start_time)
-    for i in range(100):
+    for i in range(200):
         batch_xs,batch_ys = mnist_data_set.train.next_batch(200)
 
         if i % 2 == 0 :

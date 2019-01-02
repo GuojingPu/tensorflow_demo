@@ -66,6 +66,9 @@ def conv2d(x,W):
 def avg_pool_3x3(value):
     return tf.nn.avg_pool(value=value,ksize=[1,3,3,1],strides=[1,2,2,1],padding='SAME')
 
+def max_pool_2x2(x):
+        return tf.nn.max_pool(x, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='SAME')
+
 
 def lrn(input):
     return tf.nn.lrn(input,depth_radius=4,bias=1.0,alpha=0.001/9.0,beta=0.75)
@@ -73,6 +76,7 @@ def lrn(input):
 def load_data():
 
     dir =  r'/Users/pgj/work/tensorfolw_demo/data/cifar-10-batches-py'
+    dir =  r'D:\work\tensorflow_demo\data\cifar-10-batches-py'
 
     file_1 =  dir + r'/data_batch_1'
     file_2 =  dir + r'/data_batch_2'
@@ -115,17 +119,17 @@ def model(x,y):
     W_conv = {
         'conv1':weight_variable([5,5,3,32],stddev=0.0001),
         'conv2':weight_variable([5,5,32,64],stddev=0.01),
-        'fc1':weight_variable([8*8*64,n_fc1],stddev=0.1),
-        'fc2':weight_variable([n_fc1,n_fc2],stddev=0.1),
-        'fc3':weight_variable([n_fc2,n_classes],stddev=0.1),
+        'fc1':weight_variable([8*8*64,384],stddev=0.1),
+        'fc2':weight_variable([384,192],stddev=0.1),
+        'fc3':weight_variable([192,10],stddev=0.1),
     }
 
     b_conv = {
         'conv1':bias_varible(0.0,shape=[32]),
         'conv2':bias_varible(0.1,shape=[64]),
-        'fc1':bias_varible(0.1,shape=[n_fc1]),
-        'fc2':bias_varible(0.1,shape=[n_fc2]),
-        'fc3':bias_varible(0.0,shape=[n_classes])
+        'fc1':bias_varible(0.1,shape=[384]),
+        'fc2':bias_varible(0.1,shape=[192]),
+        'fc3':bias_varible(0.0,shape=[10])
     }
 
 
@@ -151,7 +155,8 @@ def model(x,y):
     norm2 = lrn(conv2)
 
     #池化层2
-    pool2 = avg_pool_3x3(norm2)
+    # pool2 = avg_pool_3x3(norm2)
+    pool2 = max_pool_2x2(norm2)
 
     reshape = tf.reshape(pool2,[-1,8 * 8 * 64])
 
@@ -215,7 +220,7 @@ def main():
         plt.plot(c)
         plt.xlabel("Iter")
         plt.ylabel("Cost")
-        plt.title('lr=%f,ti=%d,bs=%d,acc=%f'%(learning_rate,total_batch,batch_size,acc))
+        # plt.title('lr=%f,ti=%d,bs=%d,acc=%f'%(learning_rate,total_batch,batch_size,acc))
         plt.tight_layout()
         plt.savefig('CIFAR-10-png.png', dpi=200)
 
